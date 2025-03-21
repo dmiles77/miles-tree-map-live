@@ -1,70 +1,93 @@
-# Getting Started with Create React App
+# Miles Tree Map Live Demo
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project showcases the capabilities and features of the [miles-tree-map](https://www.npmjs.com/package/miles-tree-map) React component library. The application provides an interactive demo environment where you can explore and configure various aspects of the TreeMap visualization.
 
-## Available Scripts
+## Features Demonstrated
 
-In the project directory, you can run:
+The demo allows you to experiment with various TreeMap features including:
 
-### `npm start`
+- **Multiple Data Visualizations**: Add and configure multiple TreeMap instances simultaneously
+- **Color Range Behaviors**: Explore different color schemes including gradient, heatmap, discrete, and more
+- **Interactive Navigation**: Test breadcrumb navigation and back button functionality
+- **Custom Tooltips**: Toggle and customize tooltip appearance and positioning
+- **Custom Node Rendering**: Visualize nodes with custom components and icons
+- **Animation Controls**: Adjust animation duration and other visual effects
+- **Layout Options**: Configure padding, border radius and other styling options
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Getting Started
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Running the Demo
 
-### `npm test`
+1. Clone this repository
+2. Install dependencies:
+   ```bash
+   # Using npm
+   npm install
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+   # Using yarn
+   yarn install
+   ```
+3. Start the development server:
+   ```bash
+   # Using npm
+   npm start
 
-### `npm run build`
+   # Using yarn
+   yarn start
+   ```
+4. Open [http://localhost:3000](http://localhost:3000) to view the demo in your browser
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Using miles-tree-map in Your Own Projects
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+To use the miles-tree-map component in your own React projects:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+# Using npm
+npm install miles-tree-map
 
-### `npm run eject`
+# Using yarn
+yarn add miles-tree-map
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Basic usage:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```jsx
+import { TreeMap } from 'miles-tree-map';
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+function App() {
+  const data = {
+    name: "Root",
+    children: [
+      { name: "Child 1", value: 100 },
+      { name: "Child 2", value: 200 },
+      { name: "Child 3", value: 300 }
+    ]
+  };
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+  return (
+    <TreeMap 
+      data={data}
+      colorRange={["#4ecdc4", "#ff6b6b"]}
+      colorRangeBehavior="gradient"
+    />
+  );
+}
+```
+
+## Demo Controls Guide
+
+The demo application includes a comprehensive control panel that allows you to:
+
+- Edit the TreeMap data structure in JSON format
+- Add or remove TreeMap instances
+- Configure color schemes and behaviors
+- Toggle UI features such as breadcrumbs, tooltips, and back buttons
+- Adjust appearance settings like border radius and padding
+- Test different tooltip positioning options
+- Enable custom node and tooltip components
 
 ## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+For more information about the miles-tree-map component, visit:
+- [NPM Package](https://www.npmjs.com/package/miles-tree-map)
+- [Documentation](https://github.com/yourusername/miles-tree-map) <!-- Update with actual documentation link if available -->
