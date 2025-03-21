@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/miles-tree-map-live/static/css/main.f855e6bc.css",
-    "main.js": "/miles-tree-map-live/static/js/main.1f6a54d0.js",
+    "main.js": "/miles-tree-map-live/static/js/main.527d5095.js",
     "static/js/453.cf45df33.chunk.js": "/miles-tree-map-live/static/js/453.cf45df33.chunk.js",
     "index.html": "/miles-tree-map-live/index.html",
     "main.f855e6bc.css.map": "/miles-tree-map-live/static/css/main.f855e6bc.css.map",
-    "main.1f6a54d0.js.map": "/miles-tree-map-live/static/js/main.1f6a54d0.js.map",
+    "main.527d5095.js.map": "/miles-tree-map-live/static/js/main.527d5095.js.map",
     "453.cf45df33.chunk.js.map": "/miles-tree-map-live/static/js/453.cf45df33.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f855e6bc.css",
-    "static/js/main.1f6a54d0.js"
+    "static/js/main.527d5095.js"
   ]
 }
