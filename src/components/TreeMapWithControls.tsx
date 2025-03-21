@@ -59,6 +59,32 @@ const TreeMapWithControls: React.FC = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []); // Remove menuOpen dependency to prevent loop
 
+  // Fix mobile browser viewport issues
+  useEffect(() => {
+    if (isMobile) {
+      // Initial adjustment for mobile viewport
+      const adjustViewport = () => {
+        // Set the container height to visible viewport height
+        if (containerRef.current) {
+          const vh = window.innerHeight * 0.01;
+          document.documentElement.style.setProperty('--vh', `${vh}px`);
+          containerRef.current.style.height = `calc(var(--vh, 1vh) * 100)`;
+        }
+      };
+      
+      adjustViewport();
+      
+      // Handle orientation changes and address iOS Safari issues
+      window.addEventListener('resize', adjustViewport);
+      window.addEventListener('orientationchange', adjustViewport);
+      
+      return () => {
+        window.removeEventListener('resize', adjustViewport);
+        window.removeEventListener('orientationchange', adjustViewport);
+      };
+    }
+  }, [isMobile]);
+
   // Add keyboard shortcut for toggling menu (keep functionality but remove visual hint)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -206,8 +232,9 @@ const TreeMapWithControls: React.FC = () => {
     container: {
       display: "flex",
       flexDirection: isMobile ? "column" : "row" as "column" | "row",
-      height: "100vh",
-      width: "100vw",
+      height: isMobile ? "calc(var(--vh, 1vh) * 100)" : "100vh", // Use dynamic viewport height on mobile
+      width: "100%", // Changed from 100vw to prevent horizontal scrolling
+      maxWidth: "100vw",
       fontFamily: "'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
       overflow: "hidden",
       position: "relative" as "relative",
@@ -218,8 +245,8 @@ const TreeMapWithControls: React.FC = () => {
       justifyContent: "center",
       position: "fixed" as "fixed",
       top: "15px",
-      left: menuOpen ? (isMobile ? "calc(95% - 50px)" : "calc(320px - 30px)") : "15px", // Positioned at the right edge of menu
-      zIndex: 100,
+      left: menuOpen ? (isMobile ? "calc(95% - 50px)" : "calc(320px - 22px)") : "15px", // Positioned even further right
+      zIndex: 1000, // Increased z-index to be above everything
       background: menuOpen ? "rgba(255, 255, 255, 0.9)" : (isMobile ? "#3498db" : "#4CAF50"),
       color: menuOpen ? "#333" : "white",
       border: menuOpen ? "1px solid #ddd" : "none",
@@ -229,6 +256,7 @@ const TreeMapWithControls: React.FC = () => {
       cursor: "pointer",
       boxShadow: menuOpen ? "0 2px 5px rgba(0,0,0,0.1)" : "0 3px 8px rgba(0,0,0,0.2)",
       transition: "all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+      pointerEvents: "auto", // Ensure it always accepts pointer events
       "&:hover": {
         transform: "scale(1.05)",
       },
@@ -444,7 +472,7 @@ const TreeMapWithControls: React.FC = () => {
       flexWrap: "wrap" as "wrap",
       marginTop: isMobile ? "0" : 0,
       marginLeft: menuOpen && !isMobile ? "320px" : 0, // Give space for fixed menu on desktop
-      height: "100%",
+      height: isMobile ? "calc(var(--vh, 1vh) * 100)" : "100%", // Adjusted for mobile browsers
       width: isMobile ? "100%" : (menuOpen ? "calc(100% - 320px)" : "100%"), // Adjust width based on menu state
       transition: "margin-left 0.3s ease-in-out, width 0.3s ease-in-out",
     },
@@ -461,7 +489,9 @@ const TreeMapWithControls: React.FC = () => {
     if (isMobile) {
       return {
         width: "100%",
-        height: total > 1 ? "50%" : "100%"
+        height: total > 1 ? "calc(50dvh - 10px)" : "calc(100dvh - 20px)",
+        maxHeight: total > 1 ? "calc(50dvh - 10px)" : "calc(100dvh - 20px)",
+        overflow: "hidden"
       };
     }
     
@@ -494,13 +524,21 @@ const TreeMapWithControls: React.FC = () => {
   return (
     <div style={styles.container} ref={containerRef}>
       {/* Menu toggle button with proper icons */}
-      <button 
-        style={styles.menuButton} 
-        onClick={toggleMenu}
-        title={menuOpen ? "Hide Menu" : "Show Menu"}
-      >
-        {menuOpen ? <CloseIcon /> : <MenuIcon />}
-      </button>
+      <div style={{ 
+        position: "fixed" as "fixed", 
+        zIndex: 1000, 
+        top: "15px",
+        left: menuOpen ? (isMobile ? "calc(95% - 50px)" : "calc(320px - 22px)") : "15px",
+        pointerEvents: "none" // This makes the div transparent to mouse events
+      }}>
+        <button 
+          style={{...styles.menuButton, position: "static" as "static", left: "auto", top: "auto", pointerEvents: "auto"}}
+          onClick={toggleMenu}
+          title={menuOpen ? "Hide Menu" : "Show Menu"}
+        >
+          {menuOpen ? <CloseIcon /> : <MenuIcon />}
+        </button>
+      </div>
       
       {/* Overlay for mobile when menu is open */}
       <div style={styles.overlay} onClick={toggleMenu}></div>
