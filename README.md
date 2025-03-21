@@ -13,6 +13,7 @@ The demo allows you to experiment with various TreeMap features including:
 - **Custom Node Rendering**: Visualize nodes with custom components and icons
 - **Animation Controls**: Adjust animation duration and other visual effects
 - **Layout Options**: Configure padding, border radius and other styling options
+- **Responsive UI**: Collapsible control panel that works on both desktop and mobile devices
 
 ## Getting Started
 
@@ -85,6 +86,25 @@ The demo application includes a comprehensive control panel that allows you to:
 - Adjust appearance settings like border radius and padding
 - Test different tooltip positioning options
 - Enable custom node and tooltip components
+
+### Collapsible Menu
+
+- The control panel can be toggled open/closed using the menu button in the top left corner
+- When closed, the TreeMap visualization uses the full screen width
+- You can also press the 'M' key on your keyboard to toggle the menu
+- The menu automatically adapts to your screen size
+
+### Mobile Experience
+
+When viewing on mobile devices, the demo automatically:
+
+- Transforms the control panel into a slide-out side menu (closed by default)
+- Uses optimized default settings for mobile viewing:
+  - Back button enabled for easier navigation
+  - Breadcrumbs disabled to save space
+  - Increased outer padding (10px) for better touch interaction
+  - Tooltips disabled to avoid interfering with touch navigation
+- Provides a more touch-friendly layout with larger areas for interaction
 
 ## Learn More
 
