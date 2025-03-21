@@ -218,7 +218,7 @@ const TreeMapWithControls: React.FC = () => {
       justifyContent: "center",
       position: "fixed" as "fixed",
       top: "15px",
-      left: menuOpen ? (isMobile ? "calc(95% - 50px)" : "275px") : "15px", // Position based on menu state
+      left: menuOpen ? (isMobile ? "calc(95% - 50px)" : "260px") : "15px", // Position based on menu state
       zIndex: 100,
       background: menuOpen ? "rgba(255, 255, 255, 0.9)" : (isMobile ? "#3498db" : "#4CAF50"),
       color: menuOpen ? "#333" : "white",
@@ -247,7 +247,7 @@ const TreeMapWithControls: React.FC = () => {
       top: 0,
       zIndex: 50,
       transition: "left 0.3s ease-in-out",
-      paddingTop: "70px", // More space for the menu button
+      paddingTop: "15px", // Reduced for top left logo
     },
     overlay: {
       display: menuOpen && isMobile ? "block" : "none", // Only show overlay on mobile
@@ -261,11 +261,13 @@ const TreeMapWithControls: React.FC = () => {
     },
     heading: {
       color: "#2c3e50",
-      marginBottom: "25px",
+      marginBottom: "20px",
       paddingBottom: "10px",
       borderBottom: "1px solid #3498db",
       fontWeight: 600,
       fontSize: "20px",
+      marginTop: "50px", // Increased to make room for the logo
+      textAlign: "center" as "center",
     },
     section: {
       marginBottom: "25px",
@@ -436,7 +438,20 @@ const TreeMapWithControls: React.FC = () => {
       boxSizing: "border-box" as "border-box",
       border: "1px solid rgba(0, 0, 0, 0.1)",
       position: "relative" as "relative",
-    }
+    },
+    logoContainer: {
+      position: "absolute" as "absolute",
+      top: "15px",
+      left: "15px",
+      display: "flex",
+      alignItems: "center",
+      zIndex: 5,
+    },
+    logo: {
+      width: "60px", // Made even smaller
+      height: "auto",
+      objectFit: "contain" as "contain",
+    },
   };
 
   // Calculate the grid layout for the TreeMaps
@@ -490,6 +505,9 @@ const TreeMapWithControls: React.FC = () => {
       <div style={styles.overlay} onClick={toggleMenu}></div>
       
       <div style={styles.controlPanel}>
+        <div style={styles.logoContainer}>
+          <img src={`${process.env.PUBLIC_URL}/logo192.png`} alt="TreeMap Logo" style={styles.logo} />
+        </div>
         <h3 style={styles.heading}>TreeMap Controls</h3>
         
         <div style={styles.section}>
