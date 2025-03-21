@@ -35,16 +35,17 @@ const TreeMapWithControls: React.FC = () => {
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [menuOpen, setMenuOpen] = useState<boolean>(true); // Default to open on desktop
   const containerRef = useRef<HTMLDivElement>(null);
-  const touchStartX = useRef<number | null>(null);
 
   // Detect mobile devices on mount and window resize
   useEffect(() => {
     const checkMobile = () => {
       const mobile = window.innerWidth <= 768;
       setIsMobile(mobile);
-      // On mobile initial load, close the menu by default
-      if (mobile && menuOpen) {
+      // Only set initial menu state on first detection, not on every resize
+      if (mobile) {
         setMenuOpen(false);
+      } else {
+        setMenuOpen(true);
       }
     };
 
@@ -56,46 +57,7 @@ const TreeMapWithControls: React.FC = () => {
 
     // Clean up
     return () => window.removeEventListener('resize', checkMobile);
-  }, [menuOpen]);
-
-  // Handle touch gestures for mobile
-  useEffect(() => {
-    if (!containerRef.current || !isMobile) return;
-    
-    const container = containerRef.current;
-    
-    const handleTouchStart = (e: TouchEvent) => {
-      touchStartX.current = e.touches[0].clientX;
-    };
-    
-    const handleTouchEnd = (e: TouchEvent) => {
-      if (touchStartX.current === null) return;
-      
-      const touchEndX = e.changedTouches[0].clientX;
-      const diffX = touchEndX - touchStartX.current;
-      
-      // Determine if it's a swipe (more than 50px)
-      if (Math.abs(diffX) > 50) {
-        if (diffX > 0 && !menuOpen) {
-          // Swipe right - open menu
-          setMenuOpen(true);
-        } else if (diffX < 0 && menuOpen) {
-          // Swipe left - close menu
-          setMenuOpen(false);
-        }
-      }
-      
-      touchStartX.current = null;
-    };
-    
-    container.addEventListener('touchstart', handleTouchStart);
-    container.addEventListener('touchend', handleTouchEnd);
-    
-    return () => {
-      container.removeEventListener('touchstart', handleTouchStart);
-      container.removeEventListener('touchend', handleTouchEnd);
-    };
-  }, [isMobile, menuOpen]);
+  }, []); // Remove menuOpen dependency to prevent loop
 
   // Add keyboard shortcut for toggling menu (keep functionality but remove visual hint)
   useEffect(() => {
@@ -216,7 +178,8 @@ const TreeMapWithControls: React.FC = () => {
 
   // Toggle menu
   const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
+    // Use the functional form of setState to ensure we're working with the latest state
+    setMenuOpen(prevState => !prevState);
   };
 
   // Custom tooltip style with transparent background
@@ -255,14 +218,14 @@ const TreeMapWithControls: React.FC = () => {
       justifyContent: "center",
       position: "fixed" as "fixed",
       top: "15px",
-      left: menuOpen ? (isMobile ? "calc(85% - 45px)" : "275px") : "15px", // Position based on menu state
+      left: menuOpen ? (isMobile ? "calc(95% - 50px)" : "275px") : "15px", // Position based on menu state
       zIndex: 100,
-      background: menuOpen ? "rgba(255, 255, 255, 0.9)" : "#4CAF50",
+      background: menuOpen ? "rgba(255, 255, 255, 0.9)" : (isMobile ? "#3498db" : "#4CAF50"),
       color: menuOpen ? "#333" : "white",
       border: menuOpen ? "1px solid #ddd" : "none",
       borderRadius: "50%", // Makes it circular
-      width: "44px",
-      height: "44px",
+      width: isMobile ? "48px" : "44px", // Larger on mobile
+      height: isMobile ? "48px" : "44px", // Larger on mobile
       cursor: "pointer",
       boxShadow: menuOpen ? "0 2px 5px rgba(0,0,0,0.1)" : "0 3px 8px rgba(0,0,0,0.2)",
       transition: "all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
@@ -272,7 +235,7 @@ const TreeMapWithControls: React.FC = () => {
     },
     controlPanel: {
       flex: "none",
-      width: isMobile ? "85%" : "320px", // Fixed width on desktop
+      width: isMobile ? "95%" : "320px", // Almost full width on mobile
       height: "100%",
       padding: "20px",
       borderRight: "1px solid #e0e0e0",
@@ -473,20 +436,6 @@ const TreeMapWithControls: React.FC = () => {
       boxSizing: "border-box" as "border-box",
       border: "1px solid rgba(0, 0, 0, 0.1)",
       position: "relative" as "relative",
-    },
-    swipeHint: {
-      display: isMobile && !menuOpen ? "flex" : "none",
-      position: "fixed" as "fixed",
-      left: "5px",
-      top: "50%",
-      transform: "translateY(-50%)",
-      alignItems: "center",
-      justifyContent: "center",
-      backgroundColor: "rgba(52, 152, 219, 0.1)",
-      padding: "15px 5px",
-      borderRadius: "0 4px 4px 0",
-      zIndex: 30,
-      animation: "pulse 2s infinite",
     }
   };
 
@@ -536,16 +485,6 @@ const TreeMapWithControls: React.FC = () => {
       >
         {menuOpen ? <CloseIcon /> : <MenuIcon />}
       </button>
-      
-      {/* Subtle swipe hint for mobile (only shown when menu is closed) */}
-      {isMobile && !menuOpen && (
-        <div style={styles.swipeHint}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 12H19" stroke="#3498db" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M12 5L19 12L12 19" stroke="#3498db" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </div>
-      )}
       
       {/* Overlay for mobile when menu is open */}
       <div style={styles.overlay} onClick={toggleMenu}></div>
