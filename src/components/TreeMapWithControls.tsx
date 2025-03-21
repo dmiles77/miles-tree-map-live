@@ -91,7 +91,7 @@ const TreeMapWithControls: React.FC = () => {
   const [tooltipPosition, setTooltipPosition] = useState<TooltipPosition>("mouseRight");
   const [animationDuration, setAnimationDuration] = useState<number>(300);
   const [paddingInner, setPaddingInner] = useState<number>(5);
-  const [paddingOuter, setPaddingOuter] = useState<number>(isMobile ? 10 : 50);
+  const [paddingOuter, setPaddingOuter] = useState<number>(50);
   const [borderRadius, setBorderRadius] = useState<number>(2);
   const [breadcrumbEnabled, setBreadcrumbEnabled] = useState<boolean>(!isMobile);
   const [backButtonEnabled, setBackButtonEnabled] = useState<boolean>(isMobile);
@@ -218,7 +218,7 @@ const TreeMapWithControls: React.FC = () => {
       justifyContent: "center",
       position: "fixed" as "fixed",
       top: "15px",
-      left: menuOpen ? (isMobile ? "calc(95% - 50px)" : "260px") : "15px", // Position based on menu state
+      left: menuOpen ? (isMobile ? "calc(95% - 50px)" : "calc(320px - 30px)") : "15px", // Positioned at the right edge of menu
       zIndex: 100,
       background: menuOpen ? "rgba(255, 255, 255, 0.9)" : (isMobile ? "#3498db" : "#4CAF50"),
       color: menuOpen ? "#333" : "white",
@@ -259,15 +259,29 @@ const TreeMapWithControls: React.FC = () => {
       backgroundColor: "rgba(0,0,0,0.5)",
       zIndex: 40,
     },
-    heading: {
-      color: "#2c3e50",
+    logoContainer: {
+      position: "static" as "static",
+      display: "flex",
+      alignItems: "center",
+    },
+    logo: {
+      width: "40px",
+      height: "auto",
+      objectFit: "contain" as "contain",
+      marginRight: "10px",
+    },
+    headerContainer: {
+      display: "flex",
+      alignItems: "center",
       marginBottom: "20px",
       paddingBottom: "10px",
       borderBottom: "1px solid #3498db",
+    },
+    heading: {
+      color: "#2c3e50",
       fontWeight: 600,
       fontSize: "20px",
-      marginTop: "50px", // Increased to make room for the logo
-      textAlign: "center" as "center",
+      margin: 0,
     },
     section: {
       marginBottom: "25px",
@@ -439,19 +453,6 @@ const TreeMapWithControls: React.FC = () => {
       border: "1px solid rgba(0, 0, 0, 0.1)",
       position: "relative" as "relative",
     },
-    logoContainer: {
-      position: "absolute" as "absolute",
-      top: "15px",
-      left: "15px",
-      display: "flex",
-      alignItems: "center",
-      zIndex: 5,
-    },
-    logo: {
-      width: "60px", // Made even smaller
-      height: "auto",
-      objectFit: "contain" as "contain",
-    },
   };
 
   // Calculate the grid layout for the TreeMaps
@@ -505,10 +506,12 @@ const TreeMapWithControls: React.FC = () => {
       <div style={styles.overlay} onClick={toggleMenu}></div>
       
       <div style={styles.controlPanel}>
-        <div style={styles.logoContainer}>
-          <img src={`${process.env.PUBLIC_URL}/logo192.png`} alt="TreeMap Logo" style={styles.logo} />
+        <div style={styles.headerContainer}>
+          <div style={styles.logoContainer}>
+            <img src={`${process.env.PUBLIC_URL}/logo192.png`} alt="TreeMap Logo" style={styles.logo} />
+          </div>
+          <h3 style={styles.heading}>TreeMap Controls</h3>
         </div>
-        <h3 style={styles.heading}>TreeMap Controls</h3>
         
         <div style={styles.section}>
           <h4 style={styles.sectionTitle}>Data Configuration</h4>
